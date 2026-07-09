@@ -3,9 +3,6 @@
 A full-stack hospital management platform with three portals — **Patient**, **Doctor**, and **Admin** — built with a **Node.js/Express** backend, a **Neon (serverless Postgres)** database, and a plain **HTML/CSS/JS** frontend.
 
 It includes real **DSA implementations** at its core: a **Queue** drives each doctor's live waiting room, and a **Linked List** threads a patient's appointment history.
-<img width="959" height="502" alt="image" src="https://github.com/user-attachments/assets/0c4d0e6d-c823-4b7c-b39d-d098cfc61704" />
-<img width="959" height="505" alt="image" src="https://github.com/user-attachments/assets/e32ef1d0-aea5-4ee3-9f69-5aeba8d3dc82" />
-
 
 ---
 
@@ -149,3 +146,6 @@ Click **"Admin"** in the top navigation on the landing page to log in.
 - Appointment slots are defined by the doctor; patients can only pick from real open slots, never a custom time.
 - If the app can't reach the database, double-check `DATABASE_URL` in `.env` and confirm you ran `sql/schema.sql` in the Neon SQL editor first.
 - Keep `.env` out of version control — it holds your database connection string and admin credentials. Make sure it's listed in `.gitignore` before pushing to GitHub.
+
+<img width="959" height="502" alt="image" src="https://github.com/user-attachments/assets/0c4d0e6d-c823-4b7c-b39d-d098cfc61704" />
+<img width="959" height="505" alt="image" src="https://github.com/user-attachments/assets/e32ef1d0-aea5-4ee3-9f69-5aeba8d3dc82" />
