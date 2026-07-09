@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Patient Dashboard | MediCare+</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="grain-bg"></div>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="pulse-dot"></span> MediCare+</div>
+    <button class="side-link active" data-section="overview">🏠 Overview</button>
+    <button class="side-link" data-section="book">➕ Book appointment</button>
+    <button class="side-link" data-section="appointments">📅 My appointments</button>
+    <button class="side-link" data-section="profile">👤 My profile</button>
+
+    <div class="sidebar-footer">
+      <div class="mini-profile">
+        <div class="avatar" id="sideAvatar">P</div>
+        <div>
+          <strong id="sideName">Loading…</strong>
+          <span id="sideEmail"></span>
+        </div>
+      </div>
+      <button class="btn btn-danger btn-block btn-sm" id="logoutBtn">Log out</button>
+    </div>
+  </aside>
+
+  <main class="main-area">
+
+    <!-- OVERVIEW -->
+    <section id="section-overview">
+      <div class="topbar">
+        <div><h1>Welcome back 👋</h1><p>Here's a quick look at your care.</p></div>
+        <button class="btn btn-primary" onclick="goSection('book')">➕ Book new appointment</button>
+      </div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="label">Wallet balance</div><div class="value accent" id="kpiBalance">Rs. 0</div></div>
+        <div class="kpi-card"><div class="label">Upcoming appointments</div><div class="value" id="kpiUpcoming">0</div></div>
+        <div class="kpi-card"><div class="label">Total visits</div><div class="value" id="kpiTotal">0</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Your next appointment</h3></div>
+        <div id="nextAppointmentBox"><div class="empty-state"><span class="emoji">🗓️</span>No upcoming appointments yet.</div></div>
+      </div>
+    </section>
+
+    <!-- BOOK APPOINTMENT -->
+    <section id="section-book" class="hidden-section">
+      <div class="topbar"><div><h1>Book an appointment</h1><p>Pick a speciality, a doctor, a slot, then pay.</p></div></div>
+
+      <div class="stepper">
+        <div class="step-pill active" data-step="1"><span class="num">1</span> Category</div>
+        <div class="step-pill" data-step="2"><span class="num">2</span> Doctor</div>
+        <div class="step-pill" data-step="3"><span class="num">3</span> Slot</div>
+        <div class="step-pill" data-step="4"><span class="num">4</span> Payment</div>
+        <div class="step-pill" data-step="5"><span class="num">5</span> Done</div>
+      </div>
+
+      <!-- Step 1: category -->
+      <div class="panel booking-step" id="step-1">
+        <div class="panel-head"><h3>Choose a category</h3></div>
+        <div class="grid-cards" id="bookSpecialityGrid"></div>
+      </div>
+
+      <!-- Step 2: doctor -->
+      <div class="panel booking-step hidden-section" id="step-2">
+        <div class="panel-head"><h3>Choose a doctor</h3><button class="btn btn-ghost btn-sm" onclick="goStep(1)">← Back</button></div>
+        <div id="doctorList"></div>
+      </div>
+
+      <!-- Step 3: slot -->
+      <div class="panel booking-step hidden-section" id="step-3">
+        <div class="panel-head"><h3>Choose an available slot</h3><button class="btn btn-ghost btn-sm" onclick="goStep(2)">← Back</button></div>
+        <p class="sub" style="color:var(--ink-soft);margin-top:-8px;">Only the doctor's real open slots are shown — pick one.</p>
+        <div class="slot-grid" id="slotGrid"></div>
+      </div>
+
+      <!-- Step 4: payment -->
+      <div class="panel booking-step hidden-section" id="step-4">
+        <div class="panel-head"><h3>Payment</h3><button class="btn btn-ghost btn-sm" onclick="goStep(3)">← Back</button></div>
+        <div class="panel" style="background:var(--cream);box-shadow:none;">
+          <div class="receipt-row"><span>Doctor</span><strong id="paySummaryDoctor"></strong></div>
+          <div class="receipt-row"><span>Slot</span><strong id="paySummarySlot"></strong></div>
+          <div class="receipt-row total"><span>Fee</span><strong id="paySummaryFee"></strong></div>
+        </div>
+        <div class="pay-methods" style="margin-top:18px;">
+          <div class="pay-method" data-method="card"><span class="emoji">💳</span>Card</div>
+          <div class="pay-method" data-method="cash"><span class="emoji">💵</span>Cash at hospital</div>
+        </div>
+        <form id="cardForm" class="hidden-section">
+          <div class="field"><label>Name on card</label><input type="text" name="name" placeholder="Test User" required></div>
+          <div class="field"><label>Card number</label><input type="text" name="number" placeholder="4242 4242 4242 4242" required></div>
+          <div class="field-row">
+            <div class="field"><label>Expiry</label><input type="text" name="expiry" placeholder="12/29" required></div>
+            <div class="field"><label>CVV</label><input type="text" name="cvv" placeholder="123" required></div>
+          </div>
+          <p class="sub" style="margin-top:-6px;"></p>
+        </form>
+        <button class="btn btn-primary btn-block" id="confirmPaymentBtn" style="margin-top:16px;" disabled>Confirm & pay</button>
+      </div>
+
+      <!-- Step 5: done -->
+      <div class="panel booking-step hidden-section" id="step-5">
+        <div class="panel-head"><h3>Booking confirmed 🎉</h3></div>
+        <p id="confirmationMessage" style="font-weight:600;"></p>
+        <div class="receipt" id="receiptBox"></div>
+        <div style="margin-top:18px;display:flex;gap:12px;flex-wrap:wrap;">
+          <button class="btn btn-outline" id="printReceiptBtn">🖨️ Print / Save as PDF</button>
+          <button class="btn btn-primary" onclick="goSection('appointments')">View my appointments</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- MY APPOINTMENTS -->
+    <section id="section-appointments" class="hidden-section">
+      <div class="topbar"><div><h1>My appointments</h1><p>Everything you've booked, past and upcoming.</p></div></div>
+      <div class="panel">
+        <div id="appointmentsTableWrap"></div>
+      </div>
+    </section>
+
+    <!-- PROFILE -->
+    <section id="section-profile" class="hidden-section">
+      <div class="topbar"><div><h1>My profile</h1><p>Update your details anytime.</p></div></div>
+      <div class="panel" style="max-width:480px;">
+        <form id="profileForm">
+          <div class="field"><label>Full name</label><input type="text" name="name" id="profileName"></div>
+          <div class="field"><label>Email (fixed)</label><input type="email" id="profileEmail" disabled></div>
+          <div class="field"><label>Age</label><input type="number" name="age" id="profileAge"></div>
+          <div class="field"><label>New password (leave blank to keep current)</label><input type="password" name="password" placeholder="••••••••"></div>
+          <button type="submit" class="btn btn-primary btn-block">Save changes</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+<div id="printArea"></div>
+
+<script src="/js/toast.js"></script>
+<script src="/patient/js/dashboard.js"></script>
+</body>
+</html>

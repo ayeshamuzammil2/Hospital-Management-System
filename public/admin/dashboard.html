@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Dashboard | MediCare+</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="grain-bg"></div>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="pulse-dot"></span> MediCare+</div>
+    <button class="side-link active" data-section="overview">📊 Overview</button>
+    <button class="side-link" data-section="doctors">🩺 Doctors</button>
+    <button class="side-link" data-section="patients">🧑‍🦱 Patients</button>
+
+    <div class="sidebar-footer">
+      <div class="mini-profile">
+        <div class="avatar" id="sideAvatar">A</div>
+        <div><strong>Administrator</strong><span>Hospital admin</span></div>
+      </div>
+      <button class="btn btn-danger btn-block btn-sm" id="logoutBtn">Log out</button>
+    </div>
+  </aside>
+
+  <main class="main-area">
+
+    <section id="section-overview">
+      <div class="topbar"><div><h1>Hospital overview</h1><p>Daily performance across the whole system.</p></div></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="label">Total revenue (paid)</div><div class="value accent" id="kpiRevenue">Rs. 0</div></div>
+        <div class="kpi-card"><div class="label">Pending revenue</div><div class="value" id="kpiPending">Rs. 0</div></div>
+        <div class="kpi-card"><div class="label">Patients</div><div class="value" id="kpiPatients">0</div></div>
+        <div class="kpi-card"><div class="label">Doctors</div><div class="value" id="kpiDoctors">0</div></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h3>Revenue — last 14 days</h3></div>
+        <div id="revenueChart"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-head"><h3>Revenue by speciality</h3></div>
+        <div id="specialityChart"></div>
+      </div>
+    </section>
+
+    <section id="section-doctors" class="hidden-section">
+      <div class="topbar"><div><h1>All doctors</h1><p>Every registered doctor and their earnings.</p></div></div>
+      <div class="panel"><div id="doctorsTableWrap"></div></div>
+    </section>
+
+    <section id="section-patients" class="hidden-section">
+      <div class="topbar"><div><h1>All patients</h1><p>Every registered patient and their wallet.</p></div></div>
+      <div class="panel"><div id="patientsTableWrap"></div></div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="/js/toast.js"></script>
+<script src="/admin/js/dashboard.js"></script>
+</body>
+</html>

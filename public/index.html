@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MediCare+ | Modern Hospital Management</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="grain-bg"></div>
+
+<nav class="topnav">
+  <div class="brand"><span class="pulse-dot"></span> MediCare+</div>
+  <div class="nav-actions">
+    <button class="btn btn-ghost" id="adminLoginBtn">Admin</button>
+    <button class="btn btn-outline" id="openSignin">Log in</button>
+    <button class="btn btn-primary" id="openSignup">Get started</button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div>
+    <span class="hero-eyebrow">🩺 Care, coordinated</span>
+    <h1>Your whole hospital, <em>one calm dashboard.</em></h1>
+    <p>Book appointments by speciality and real doctor slots, pay by card or cash, get an instant receipt, and track your queue position — all in one place for patients, doctors and admins.</p>
+    <div class="hero-ctas">
+      <button class="btn btn-primary" id="heroPatientBtn">Book as a patient</button>
+      <button class="btn btn-outline" id="heroDoctorBtn">I'm a doctor</button>
+    </div>
+  </div>
+  <div class="hero-visual">
+    <svg class="vital-line" viewBox="0 0 400 70" preserveAspectRatio="none">
+      <polyline points="0,35 60,35 80,10 100,60 120,35 180,35 200,15 220,55 240,35 400,35"
+        fill="none" stroke="white" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" opacity="0.85"/>
+    </svg>
+    <div class="hero-card">
+      <strong>Appointment confirmed</strong>
+      <span>Dr. Amina Raza · Room 204 · Today, 4:30 PM</span>
+    </div>
+  </div>
+</section>
+
+<div class="stats-strip">
+  <div class="stat"><b>10</b><span>Specialities covered</span></div>
+  <div class="stat"><b>Real-time</b><span>Doctor slot availability</span></div>
+  <div class="stat"><b>Instant</b><span>Digital payment receipts</span></div>
+  <div class="stat"><b>Live</b><span>Patient queue tracking</span></div>
+</div>
+
+<section class="section" id="specialities">
+  <div class="section-head">
+    <span class="eyebrow">Specialities</span>
+    <h2>Find the right care, fast</h2>
+    <p>Choose a category to see available doctors, their fees, and their next open slots.</p>
+  </div>
+  <div class="grid-cards" id="specialityGrid">
+    </div>
+</section>
+
+<div class="overlay hidden" id="authOverlay">
+  <div class="modal modal-wrap">
+    <button class="modal-close" id="closeModal">✕</button>
+
+    <div class="role-toggle" id="roleToggle">
+      <button class="role-btn active" data-role="patient">Patient</button>
+      <button class="role-btn" data-role="doctor">Doctor</button>
+    </div>
+
+    <div class="tabs" id="authTabs">
+      <button class="tab-btn active" data-tab="signin">Sign in</button>
+      <button class="tab-btn" data-tab="signup">Register</button>
+      <button class="tab-btn" data-tab="forgot">Reset</button>
+    </div>
+
+    <div class="form-error" id="formError"></div>
+    <div class="form-success" id="formSuccess"></div>
+
+    <form id="patientSigninForm" class="auth-form">
+      <h3>Welcome back</h3>
+      <p class="sub">Sign in to book and manage your appointments instantly.</p>
+      
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="name@example.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="••••••••" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block">Sign in</button>
+    </form>
+
+    <form id="patientSignupForm" class="auth-form hidden">
+      <h3>Create account</h3>
+      <p class="sub">Get started as a patient. No verification required.</p>
+      
+      <div class="field">
+        <label>Full name</label>
+        <input type="text" name="name" placeholder="e.g. Ayesha Khan" required>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Email</label>
+          <input type="email" name="email" placeholder="you@mail.com" required>
+        </div>
+        <div class="field">
+          <label>Age</label>
+          <input type="number" name="age" min="1" max="120" placeholder="24" required>
+        </div>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="At least 6 characters" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block">Create account</button>
+    </form>
+
+    <form id="doctorSigninForm" class="auth-form hidden">
+      <h3>Doctor Portal</h3>
+      <p class="sub">Access your live queue, patient records, and payouts.</p>
+      
+      <div class="field">
+        <label>Medical Email</label>
+        <input type="email" name="email" placeholder="dr.name@medicare.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="••••••••" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block">Access Dashboard</button>
+    </form>
+
+    <form id="doctorSignupForm" class="auth-form hidden">
+      <h3>Join as Medical Partner</h3>
+      <p class="sub">Set up your virtual clinic slot in seconds.</p>
+      
+      <div class="field">
+        <label>Full Name</label>
+        <input type="text" name="name" placeholder="Dr. Bilal Ahmed" required>
+      </div>
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="doctor@example.com" required>
+      </div>
+      <div class="field">
+        <label>Password</label>
+        <input type="password" name="password" placeholder="Min. 6 characters" required>
+      </div>
+      <div class="field">
+        <label>Medical Speciality</label>
+        <select name="specialityId" id="doctorSignupSpeciality" required></select>
+      </div>
+      <div class="field-row">
+        <div class="field">
+          <label>Room No.</label>
+          <input type="text" name="roomNo" placeholder="204" required>
+        </div>
+        <div class="field">
+          <label>Fee (Rs.)</label>
+          <input type="number" name="fee" placeholder="1500" min="0" required>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block">Register Doctor Profile</button>
+    </form>
+
+    <form id="patientForgotForm" class="auth-form hidden">
+      <h3>Reset Password</h3>
+      <p class="sub">Confirm your identity details to update your access code.</p>
+      
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="name@example.com" required>
+      </div>
+      <div class="field">
+        <label>Age (for verification)</label>
+        <input type="number" name="age" placeholder="24" required>
+      </div>
+      <div class="field">
+        <label>New Password</label>
+        <input type="password" name="newPassword" placeholder="••••••••" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block">Update Password</button>
+    </form>
+
+    <form id="doctorForgotForm" class="auth-form hidden">
+      <h3>Doctor Account Reset</h3>
+      <p class="sub">Verify your assigned room number to set a new password.</p>
+      
+      <div class="field">
+        <label>Email Address</label>
+        <input type="email" name="email" placeholder="doctor@example.com" required>
+      </div>
+      <div class="field">
+        <label>Room Number</label>
+        <input type="text" name="roomNo" placeholder="204" required>
+      </div>
+      <div class="field">
+        <label>New Password</label>
+        <input type="password" name="newPassword" placeholder="••••••••" required>
+      </div>
+      
+      <button type="submit" class="btn btn-primary btn-block">Reset Portal Password</button>
+    </form>
+
+    <div class="switch-link" id="switchHint"></div>
+  </div>
+</div>
+
+<div class="overlay hidden" id="adminOverlay">
+  <div class="modal modal-wrap" style="max-width:380px;">
+    <button class="modal-close" id="closeAdminModal">✕</button>
+    <h3>Admin login</h3>
+    <p class="sub">Restricted access for hospital administrators.</p>
+    <div class="form-error" id="adminFormError"></div>
+    <form id="adminLoginForm">
+      <div class="field"><label>Email</label><input type="email" name="email" required></div>
+      <div class="field"><label>Password</label><input type="password" name="password" required></div>
+      <button type="submit" class="btn btn-primary btn-block">Sign in as admin</button>
+    </form>
+  </div>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="/js/toast.js"></script>
+<script src="/js/auth.js"></script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Doctor Dashboard | MediCare+</title>
+<link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div class="grain-bg"></div>
+
+<div class="app-shell">
+  <aside class="sidebar">
+    <div class="brand"><span class="pulse-dot"></span> MediCare+</div>
+    <button class="side-link active" data-section="overview">🏠 Overview</button>
+    <button class="side-link" data-section="queue">🧾 Today's queue</button>
+    <button class="side-link" data-section="patients">🗂️ All patients</button>
+    <button class="side-link" data-section="slots">🕒 Manage slots</button>
+    <button class="side-link" data-section="profile">👤 My profile</button>
+
+    <div class="sidebar-footer">
+      <div class="mini-profile">
+        <div class="avatar" id="sideAvatar">D</div>
+        <div>
+          <strong id="sideName">Loading…</strong>
+          <span id="sideEmail"></span>
+        </div>
+      </div>
+      <button class="btn btn-danger btn-block btn-sm" id="logoutBtn">Log out</button>
+    </div>
+  </aside>
+
+  <main class="main-area">
+
+    <section id="section-overview">
+      <div class="topbar"><div><h1 id="welcomeHeading">Welcome, Doctor 👋</h1><p>Here's today at a glance.</p></div></div>
+      <div class="kpi-row">
+        <div class="kpi-card"><div class="label">Earnings balance</div><div class="value accent" id="kpiBalance">Rs. 0</div></div>
+        <div class="kpi-card"><div class="label">In queue today</div><div class="value" id="kpiQueue">0</div></div>
+        <div class="kpi-card"><div class="label">Total appointments</div><div class="value" id="kpiTotal">0</div></div>
+        <div class="kpi-card"><div class="label">Cash pending</div><div class="value" id="kpiCashPending">Rs. 0</div></div>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Next in queue</h3><button class="btn btn-outline btn-sm" onclick="goSection('queue')">View full queue →</button></div>
+        <div id="nextInQueueBox"></div>
+      </div>
+    </section>
+
+    <section id="section-queue" class="hidden-section">
+      <div class="topbar"><div><h1>Today's queue</h1><p>Patients waiting, in slot order. Mark them checked once seen.</p></div></div>
+      <div class="panel" id="queueBox"></div>
+    </section>
+
+    <section id="section-patients" class="hidden-section">
+      <div class="topbar"><div><h1>All appointments</h1><p>Every patient who has booked with you, with payment status.</p></div></div>
+      <div class="panel"><div id="patientsTableWrap"></div></div>
+    </section>
+
+    <section id="section-slots" class="hidden-section">
+      <div class="topbar"><div><h1>Manage slots</h1><p>Open new appointment slots for patients to book.</p></div></div>
+      <div class="panel" style="max-width:520px;">
+        <form id="addSlotForm">
+          <div class="field">
+            <label for="slotMode">Slot Schedule Mode</label>
+            <select id="slotMode" name="slotMode" style="width: 100%; padding: 8px; border-radius: var(--radius-md, 6px); border: 1px solid var(--border, #ccc);">
+              <option value="single">Single Custom Date</option>
+              <option value="bulk">Repeat Weekly (Bulk Auto-Fill)</option>
+            </select>
+          </div>
+
+          <div id="singleDateGroup" class="field">
+            <label>Date</label>
+            <input type="date" name="date">
+          </div>
+
+          <div id="bulkDateGroup" class="field-row" style="display: none;">
+            <div class="field"><label>From Date</label><input type="date" name="startDate"></div>
+            <div class="field"><label>To Date</label><input type="date" name="endDate"></div>
+          </div>
+
+          <div id="weekDaysGroup" class="field" style="display: none; margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 8px;">Select Active Days</label>
+            <div style="display: flex; gap: 12px; flex-wrap: wrap; background: rgba(0,0,0,0.02); padding: 10px; border-radius: 6px;">
+              <label style="display: flex; align-items: center; gap: 4px; font-size: 0.9rem;"><input type="checkbox" name="days" value="1" checked> Mon</label>
+              <label style="display: flex; align-items: center; gap: 4px; font-size: 0.9rem;"><input type="checkbox" name="days" value="2" checked> Tue</label>
+              <label style="display: flex; align-items: center; gap: 4px; font-size: 0.9rem;"><input type="checkbox" name="days" value="3" checked> Wed</label>
+              <label style="display: flex; align-items: center; gap: 4px; font-size: 0.9rem;"><input type="checkbox" name="days" value="4" checked> Thu</label>
+              <label style="display: flex; align-items: center; gap: 4px; font-size: 0.9rem;"><input type="checkbox" name="days" value="5" checked> Fri</label>
+              <label style="display: flex; align-items: center; gap: 4px; font-size: 0.9rem;"><input type="checkbox" name="days" value="6"> Sat</label>
+              <label style="display: flex; align-items: center; gap: 4px; font-size: 0.9rem;"><input type="checkbox" name="days" value="0"> Sun</label>
+            </div>
+          </div>
+
+          <div class="field-row">
+            <div class="field"><label>Start time</label><input type="time" name="startTime" required></div>
+            <div class="field"><label>End time</label><input type="time" name="endTime" required></div>
+          </div>
+          
+          <button type="submit" class="btn btn-primary btn-block">Add slot</button>
+        </form>
+      </div>
+      <div class="panel">
+        <div class="panel-head"><h3>Your slots</h3><span style="color:var(--ink-soft);font-size:.82rem;">Booked slots can't be edited or deleted — cancel the appointment first.</span></div>
+        <div id="slotsTableWrap"></div>
+      </div>
+    </section>
+
+    <section id="section-profile" class="hidden-section">
+      <div class="topbar"><div><h1>My profile</h1><p>Update your consultation details.</p></div></div>
+      <div class="panel" style="max-width:480px;">
+        <form id="profileForm">
+          <div class="field"><label>Full name</label><input type="text" name="name" id="profileName"></div>
+          <div class="field"><label>Email (fixed)</label><input type="email" id="profileEmail" disabled></div>
+          <div class="field"><label>Speciality (fixed)</label><input type="text" id="profileSpeciality" disabled></div>
+          <div class="field-row">
+            <div class="field"><label>Room number</label><input type="text" name="roomNo" id="profileRoom"></div>
+            <div class="field"><label>Fee (Rs.)</label><input type="number" name="fee" id="profileFee"></div>
+          </div>
+          <div class="field"><label>Bio</label><textarea name="bio" id="profileBio" rows="3"></textarea></div>
+          <div class="field"><label>New password (leave blank to keep current)</label><input type="password" name="password" placeholder="••••••••"></div>
+          <button type="submit" class="btn btn-primary btn-block">Save changes</button>
+        </form>
+      </div>
+    </section>
+
+  </main>
+</div>
+
+<div class="toast-wrap" id="toastWrap"></div>
+
+<script src="/js/toast.js"></script>
+<script src="/doctor/js/dashboard.js"></script>
+</body>
+</html>
